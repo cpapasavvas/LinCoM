@@ -116,10 +116,10 @@ if strcmp(saveP, 'y')
 end
 
 %%
-% plotting the place fields for specific cells
-% this can be run separately 
-% filepath that includes cluster files and a text file (named 'clusters')
-% with the list of clusters is needed here
-load('filepath.mat')
-[PFs, OCCUPs, CVs, infos] = getLinearPlFields(filepath, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels, 1);
+% calculate and plot the place fields for specific cells
+
+% load the spiketimes of different cells
+disp('Choose a mat file with the spiketimes of the cells')
+cells = loadCells;
+[PFs, OCCUPs] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels);
 

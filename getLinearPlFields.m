@@ -1,4 +1,4 @@
-function [PF, OCCUP] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels, plFlag)
+function [PF, OCCUP] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels)
 %GETLINEARPLFIELDS function that handles the generation of linear place
 %field (by calling linearPlField function).
 %   The function receives the clusters of detected runs, their timings and
@@ -13,26 +13,33 @@ function [PF, OCCUP] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lap
 % Feb 2019
 
 
+% deduct frame rate from the continious time vector
+fR = 1/(cTrajT(2)-cTrajT(1));
+
+
 PF = cell(length(uniqPaths), length(cells));
 OCCUP = cell(length(uniqPaths), 1);         % this is common among the cells
 for i= 1: length(cells)                 % scroll across cells
     spikeT = cells{i};
     [PF(:,i), OCCUP(:,1)] = linearPlField(fR, spikeT, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj);
-    if plFlag
-        step = 1/(length(uniqPaths{i})-1);
-        subplot(length(uniqPaths), 1, i);
-        plot(0:step:1, PF{i})
+
+    figure(10+i)
+    for j=1:size(PF,1)
+        step = 1/(length(uniqPaths{j})-1);
+        subplot(length(uniqPaths), 1, j);
+        plot(0:step:1, PF{j,i})
         ylabel('FR')
-        
-        if i==1
-            title({num2str(cellID); labels{i}});
+
+        if j == 1
+            title({['cell ' num2str(i)]; labels{j}});
         else
-            title( subtitle)
+            title( labels{j})
         end
-        if i == length(PF)
+        if j == length(PF)
             xlabel('normalized distance')
         end
     end
+
 end
 
 end
