@@ -1,4 +1,4 @@
-function [firingR, occup, CV, info] = linearPlField(cellID, cl, uniqPaths, seqPaths, cT, lapsTd, dTraj, labels, plotflag)
+function [firingR, occup] = linearPlField(frameR, spikesT, uniqPaths, seqPaths, cT, lapsTd, dTraj)
 %LINEARPLFIELD Produces the linear place field for a specific cell
 %   It receives the cellID, the cluster of the cell, the detected runs and
 %   the discrete trajectory to produce the linear place field.
@@ -11,10 +11,10 @@ function [firingR, occup, CV, info] = linearPlField(cellID, cl, uniqPaths, seqPa
 % Yale School of Medicine
 % Feb 2019
 
-lapsTc = cT(lapsTd);
 
-% extract the spike times for all the laps
-spikesT = cl.featuredata(:,8);       % in seconds already
+% transform discrete time to continious 
+% the spike times are expected in continious time
+lapsTc = cT(lapsTd);
 
 % classify the spike trains and trajectories to the unique paths
 % spikesTL has all the spikes sorted in all the individual runs
@@ -36,9 +36,7 @@ end
 
 % remove everything that is outside of the path
 % calculate occupancy for each unique path
-% this needs to be in seconds
-% considering a 30Hz frame rate for the videotracking
-frameR = 30;
+% this needs to be in seconds (videotracking frame rate used) 
 occup = cell(length(uniqPaths),1);
 for i =1 : length(dTrajU)
     dTrajU{i}(~ismember(dTrajU{i},uniqPaths{i}))=[];
@@ -63,41 +61,11 @@ for i = 1: length(spikesTU)
     spikeCount{i} =  histcounts(categorical(spikeBins{i}), categorical(uniqPaths{i}));
 end
 
-% calc firing rate, cv, info and plot the place fields
+% calc firing rate
 firingR = cell(length(spikesTU),1);
-CV = zeros(length(firingR), 1);
-info = zeros(length(firingR), 1);
 for i = 1: length(spikesTU)
     firingR{i} = spikeCount{i}./occup{i};
     firingR{i}(isnan(firingR{i}))=0;
-    
-    x = firingR{i}./mean(firingR{i});
-    p = occup{i}./sum(occup{i});
-    
-    % calculate coefficient of variation as in CalcPFSpatialInfoGDlabjs
-    CV(i) = sqrt(sum((x).^2.*p) - sum(x.*p).^2);
-    
-    % calculate spatial information
-    x(x==0) = 1;              % as in CalcPFSpatialInfoGDlabjs
-    info(i) = sum(p.*x.*log2(x));
-
-    % plot the place fields  for the different directions if flag is up 
-    if plotflag
-        step = 1/(length(uniqPaths{i})-1);
-        subplot(length(uniqPaths), 1, i);
-        plot(0:step:1, firingR{i})
-        ylabel('FR')
-        
-        subtitle = [ labels{i} ' - ' 'CV:' num2str(CV(i)) ' - ' 'SpInfo:' num2str(info(i)) ];
-        if i==1
-            title({num2str(cellID); subtitle});
-        else
-            title( subtitle)
-        end
-        if i == length(spikesTU)
-            xlabel('normalized distance')
-        end
-    end
 end
 
 

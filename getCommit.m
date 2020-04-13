@@ -1,4 +1,4 @@
-function [commitI, commitMap] = getCommit(uniqB, connM, endsI, ecc, adjM, frame)
+function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 %GETCOMMIT Summary of this function goes here
 %   The functions gets all the elements that define the network and asks
 %   from the user to choose the commitment nodes in the graph, one for each end.
@@ -16,7 +16,7 @@ function [commitI, commitMap] = getCommit(uniqB, connM, endsI, ecc, adjM, frame)
 % interactive function needed here
 % to get the commitement point for each end
 % the commitment points should be sorted according to the ends
-commitI = getCommitFig(uniqB, connM, endsI, frame);
+commitI = getCommitFig(uniqB, distM, adjM, endsI, frame);
 
 % map the bins beyond the commitment points to their respective end
 % assuming that the path from the commitm point to its end is always

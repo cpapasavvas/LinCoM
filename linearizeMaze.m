@@ -1,12 +1,17 @@
 %%
-% get an image of the maze either from a movie or a saved frame.mat file
+% get an image of the maze either from a movie or an image or a saved 
+% frame.mat file.
 % the movie should be the same as the one on which videotracking was
-% applied and the trajectory was generated.
-loadP = input('enter y to get a frame from a movie: ', 's');
+% applied for the extraction of trajectory.
+loadP = input('enter y to get a frame from a movie or an image: ', 's');
 if strcmp(loadP, 'y')
-    mv=loadVideoFile;
-    brightness = 1;                 % brightness parameter
-    frame=getBrightFrame(mv,brightness);     
+    [obj,type]=loadVideoFile;
+    if strcmp(type, 'video')
+        brightness = 1;                 % brightness parameter
+        frame=getBrightFrame(obj,brightness);     
+    else
+        frame = obj;
+    end
     
     saveP = input('enter y if you want to save the frame for later: ', 's');
     if strcmp(saveP, 'y')
@@ -47,7 +52,7 @@ end
 endsI = findEnds(adjM);
 
 % get the commitment points in the maze
-[commI, commitMap] = getCommit(uniqB, connM, endsI, ecc, adjM, frame);
+[commI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame);
 
 % save progress
 saveP = input('enter y if you want to save progress: ', 's');
@@ -96,10 +101,8 @@ end
 [uniqPaths, seqPaths, labels] = findUniqPaths(lapsActual, lapsIdeal, adjM, distM);
 close
 
-% considering that lapsTime indicate the first timepoint entered in a bin,
-% there is a problem with the last bin and first bin in a run. The stay in
-% the last bin has duration 0 and the stay in the first bin is
-% overestimated. Fixing this inaccuracy:
+% lapsTime indicate the first timepoint entered in a bin
+% Fixing inaccuracy with the first and last bin:
 lapsTime = fixLapsTime(lapsTime,lapsActual, dTraj);
 
 % plot the detected laps with their labels

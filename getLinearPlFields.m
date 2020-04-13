@@ -1,4 +1,4 @@
-function [PF, OCCUP, CVs, infos] = getLinearPlFields(fpath, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels, plFlag)
+function [PF, OCCUP] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels, plFlag)
 %GETLINEARPLFIELDS function that handles the generation of linear place
 %field (by calling linearPlField function).
 %   The function receives the clusters of detected runs, their timings and
@@ -13,24 +13,25 @@ function [PF, OCCUP, CVs, infos] = getLinearPlFields(fpath, uniqPaths, seqPaths,
 % Feb 2019
 
 
-% load the cl file for the specific cell
-filepath = fullfile(fpath, 'clusters');
-if exist(filepath,'file')
-    a = textread(filepath,'%s');
-else
-    error('cannot find cluster file in the given filepath')
-end
-
-PF = cell(length(uniqPaths), size(a,1));
+PF = cell(length(uniqPaths), length(cells));
 OCCUP = cell(length(uniqPaths), 1);         % this is common among the cells
-CVs = zeros(length(uniqPaths), size(a,1));
-infos = zeros(length(uniqPaths), size(a,1));
-for i= 1: size(a,1)
-    filenameCL = fullfile(fpath, a{i});
-    cl = cl2mat(filenameCL);
-    [PF(:,i), OCCUP(:,1), CVs(:,i), infos(:,i)] = linearPlField(i, cl, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels, plFlag);
+for i= 1: length(cells)                 % scroll across cells
+    spikeT = cells{i};
+    [PF(:,i), OCCUP(:,1)] = linearPlField(fR, spikeT, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj);
     if plFlag
-        pause
+        step = 1/(length(uniqPaths{i})-1);
+        subplot(length(uniqPaths), 1, i);
+        plot(0:step:1, PF{i})
+        ylabel('FR')
+        
+        if i==1
+            title({num2str(cellID); labels{i}});
+        else
+            title( subtitle)
+        end
+        if i == length(PF)
+            xlabel('normalized distance')
+        end
     end
 end
 

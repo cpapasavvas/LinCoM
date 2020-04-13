@@ -10,16 +10,17 @@ function plotLapsInTime(uniqPaths, seqPaths, lapsIdeal, lapsTime, dTraj, ecc, cT
 % eccentricity of dTraj
 dTraj_ecc = ecc(dTraj);
 
+% Limitation: limited number of distinct colors assigned to the paths
+colorM = get(gca,'colororder');
+
 % make up the title text
-load('colorM.mat')
-colorM = colorM/255;
 titleTxt = cell(size(uniqPaths));
 for i= 1: length(uniqPaths)
     [~,mI] = min( abs(uniqPaths{i}(1) - lapsIdeal(:)));
     A = lapsIdeal(mI);
     [~,mI] = min( abs(uniqPaths{i}(end) - lapsIdeal(:)));
     Z = lapsIdeal(mI);
-    ctext = sprintf('{%f %f %f}', colorM(i,:));
+    ctext = sprintf('{%f %f %f}', colorM(mod(i-1,size(colorM,1))+1,:));
     titleTxt{i} = ['\color[rgb]' ctext labels{i} ' : ' num2str(A) '->' num2str(Z)];
 end
 
