@@ -45,17 +45,15 @@ peakV(peakC==0)=[];
 peakC(peakC==0)=[];
 
 
-% produce the peakC and clean it up
-% clean it up means remove peaks that indicate small moves back and forth
-% there is a leeway
+% produce the peakC and remove peaks that indicate small moves back and forth
+% there is a leeway parameter allowing this
 leeway = 4;
 for i = length(peakC)-1 : -1 : 1
     if peakC(i) == peakC(i+1) && dTraj_ecc(peakI(i)) ~= dTraj_ecc(peakI(i+1))
         minEcc = min([dTraj_ecc(peakI(i)) dTraj_ecc(peakI(i+1))]);
         minInterEcc = min(dTraj_ecc(peakI(i):peakI(i+1)));
         if minEcc - minInterEcc < leeway
-            % the one which is less eccentric is removed 
-            % if their eccentricity is the same, they remain for the moment 
+            % the one which is less eccentric is removed  
             if dTraj_ecc(peakI(i)) > dTraj_ecc(peakI(i+1))
                 peakC(i+1)=[];
                 peakV(i+1)=[];
@@ -68,7 +66,7 @@ for i = length(peakC)-1 : -1 : 1
         end
     end
 end
-% further cleaning if needed for those that have same eccentricity
+% further exclusion of peaks, case of three consecutive appearances of the same end 
 for i = length(peakC)-2 : -1 : 1
     if peakC(i) == peakC(i+1) && peakC(i+1) == peakC(i+2)
         peakC(i+1)=[];
@@ -76,10 +74,8 @@ for i = length(peakC)-2 : -1 : 1
         peakI(i+1)=[];
     end
 end
-        
 
-
-% find the runs
+% mark the runs
 lapsActual = [];
 lapsIdeal= [];
 lapsT = [];
@@ -88,12 +84,14 @@ for i = 1: length(peakC)-1
     if peakC(i) ~= peakC(i+1)
         lapsActual = [lapsActual; peakV(i) peakV(i+1)];
         lapsIdeal = [lapsIdeal; peakC(i) peakC(i+1)];
-        lapsT = [lapsT; peakI(i) peakI(i+1)];
-        lapsTime = [lapsTime; timeI(peakI(i)) timeI(peakI(i+1))];
+        lapsT = [lapsT; peakI(i) peakI(i+1)];                       %save discrete time
+        lapsTime = [lapsTime; timeI(peakI(i)) timeI(peakI(i+1))];   %save continuous time
     end
 end
 
 disp('Laps detected')
+
+
 
 demoFig = figure;
 imshow(frame)
@@ -101,7 +99,7 @@ hold on
 for i = 1: length(connM)  
     xp = uniqB([connM(i,1) connM(i,2)], 1);
     yp = uniqB([connM(i,1) connM(i,2)], 2);
-    plot(xp, yp, 'ks-','MarkerSize', 15);
+    plot(xp, yp, 'ko-','MarkerSize', 15);
 end
 for i = endsI
     text(uniqB(i,1)+10, uniqB(i,2), num2str(i), 'Color', 'g')
@@ -132,20 +130,20 @@ for i = 1: length(dTraj)
     end
     
     % scatter the most eccentric bins, ends of tracks
-    scatter(uniqB(endsI,1), uniqB(endsI,2), 200, 'gs')
+    scatter(uniqB(endsI,1), uniqB(endsI,2), 200, 'go')
     
     % scatter the commitment points
-    scatter(uniqB(commI,1), uniqB(commI,2), 200, 'ys') 
+    scatter(uniqB(commI,1), uniqB(commI,2), 200, 'yo') 
     
     % scatter the lap trace
     currLapI = xor(i> lapsT(:,1), i> lapsT(:,2));
     currLapStartT = lapsT(currLapI,1);
     currLapTrace = dTraj(currLapStartT: i-1);
-    scatter(uniqB(currLapTrace,1), uniqB(currLapTrace,2), 100, 's','MarkerFaceColor', [0.4 0.5 1], 'MarkerEdgeColor', [0.4 0.5 1])
+    scatter(uniqB(currLapTrace,1), uniqB(currLapTrace,2), 100, 'o','MarkerFaceColor', [0.4 0.5 1], 'MarkerEdgeColor', [0.4 0.5 1])
     
     
     % scatter the current point on the discrete trajectory
-    scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 150, 'bs', 'filled')
+    scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 150, 'bo', 'filled')
     pause(0.001)
     
     if ismember(i, lapsT(:,2))

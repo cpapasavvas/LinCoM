@@ -3,25 +3,17 @@
 % frame.mat file.
 % the movie should be the same as the one on which videotracking was
 % applied for the extraction of trajectory.
-loadP = input('enter y to get a frame from a movie or an image: ', 's');
-if strcmp(loadP, 'y')
-    [obj,type]=loadVideoFile;
-    if strcmp(type, 'video')
-        brightness = 1;                 % brightness parameter
-        frame=getBrightFrame(obj,brightness);     
-    else
-        frame = obj;
-    end
-    
-    saveP = input('enter y if you want to save the frame for later: ', 's');
-    if strcmp(saveP, 'y')
-        save frame.mat frame
-        disp('frame.mat saved')
-    end
+
+[obj,type]=loadVideoFile;
+if strcmp(type, 'video')
+    brightness = 1;                 % brightness parameter
+    frame=getBrightFrame(obj,brightness);     
 else
-    disp('Loading an already saved frame from the current directory instead')
-    load('frame.mat')
+    frame = obj;
 end
+
+% load continuous trajectory (cTraj)
+[cTraj, cTrajT] = load_cTraj;
 
 %%
 % ask from the user to draw a polyline
@@ -32,20 +24,19 @@ polyline = removeCommonSegm(polyline);
 
 % allBins have the same cell structure as the polyline
 % it's a collection of all the bins organized in line segments
+% IMPROVEMENT NEEDED: compare the minimum distance between bins and the
+% maximum distance recorded in the trajectory : the latter should be lower
+% for more robust results
+% ('fewer bins are suggested due to low sampling rate of trajectory')
 allBins = discretizeMaze(polyline, frame);
 
 % make up a network/graph of bins
 % the bins are the nodes in an undirected acyclic graph/network
-fprintf('Making up the network...')
+fprintf('Making up the graph...')
 [uniqB, adjM, connM, distM, ecc] = makeNetwork(allBins);
 disp('DONE')
 
-% save progress
-saveP = input('enter y if you want to save progress: ', 's');
-if strcmp(saveP, 'y')
-    save Network.mat uniqB adjM connM distM ecc
-    disp('Network.mat saved')
-end
+
 
 %%
 % find the ends of the tracks / leaves of the tree in graph theoretic terms
@@ -54,17 +45,10 @@ endsI = findEnds(adjM);
 % get the commitment points in the maze
 [commI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame);
 
-% save progress
-saveP = input('enter y if you want to save progress: ', 's');
-if strcmp(saveP, 'y')
-    save commitMap.mat commI commitMap endsI
-    disp('commitMap.mat saved')
-end
 
 
 %%
-% load continuous trajectory (cTraj)
-[cTraj, cTrajT] = load_cTraj;
+
 
 % transform the continuous trajectory to discrete trajectory
 % the discrete trajectory is a sequence of bins in the network
@@ -80,13 +64,6 @@ if strcmp(demoP, 'y')
     % demoDiscrProjection(uniqB,connM, dTraj,cTraj, frame, 500:800);
 end
 
-% save progress
-saveP = input('enter y if you want to save progress: ', 's');
-if strcmp(saveP, 'y')
-    save Traj.mat dTraj cTraj cTrajT
-    disp('Traj.mat saved')
-end
-
 
 %%
 % detect the laps using the network properties
@@ -95,9 +72,6 @@ end
 
 % check consistency of the laps and find the unique paths/runs and their
 % sequence. Label the unique paths/runs
-if exist('frameLabeled.fig','file')
-    openfig('frameLabeled.fig');
-end
 [uniqPaths, seqPaths, labels] = findUniqPaths(lapsActual, lapsIdeal, adjM, distM);
 close
 
@@ -108,12 +82,6 @@ lapsTime = fixLapsTime(lapsTime,lapsActual, dTraj);
 % plot the detected laps with their labels
 plotLapsInTime(uniqPaths, seqPaths, lapsIdeal, lapsTime, dTraj, ecc, cTrajT, labels)
 
-% save progress
-saveP = input('enter y if you want to save progress: ', 's');
-if strcmp(saveP, 'y')
-    save Laps.mat lapsActual lapsIdeal lapsTime uniqPaths seqPaths labels
-    disp('Laps.mat saved')
-end
 
 %%
 % calculate and plot the place fields for specific cells

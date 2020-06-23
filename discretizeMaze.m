@@ -19,7 +19,7 @@ while ~isempty(nbins)
     linspaceY = linspace(polyline{1}(1,2), polyline{1}(2,2), nbins);
 
     hold on
-    plot(linspaceX, linspaceY, 's-', 'MarkerSize',14);
+    plot(linspaceX, linspaceY, 'o-', 'MarkerSize',14);
     
     if firsttime
         nbins = input('give the number of bins for the track shown: ');
@@ -43,9 +43,9 @@ for i = 1: length(polyline)
         
         linspaceX = linspace(polyline{i}(j,1), polyline{i}(j+1,1), nbins);
         linspaceY = linspace(polyline{i}(j,2), polyline{i}(j+1,2), nbins);
-        plot(linspaceX, linspaceY, 's-', 'MarkerSize',14);
+        plot(linspaceX, linspaceY, 'o-', 'MarkerSize',14);
         
-        % skipping the first case beacuse it is already counted
+        % skipping the first case because it is already counted
         if i==1 && j==1
             continue;
         end

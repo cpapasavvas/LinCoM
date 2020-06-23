@@ -16,17 +16,17 @@ hold on
 % for i = 1: length(connM)  
 %     xp = uniqB([connM(i,1) connM(i,2)], 1);
 %     yp = uniqB([connM(i,1) connM(i,2)], 2);
-%     plot(xp, yp, 'ks-','MarkerSize', 15);
+%     plot(xp, yp, 'ko-','MarkerSize', 15);
 % end
 
-plot(uniqB(:,1), uniqB(:,2), 'ks','MarkerSize', 15);
+plot(uniqB(:,1), uniqB(:,2), 'ko','MarkerSize', 15);
 
 % for i =1: length(uniqB)
 %     text(uniqB(i,1), uniqB(i,2), num2str(i), 'Color','y')
 % end
 
 % scatter the most eccentric bins, ends of tracks
-scatter(uniqB(endsI,1), uniqB(endsI,2), 200, 'gs');
+scatter(uniqB(endsI,1), uniqB(endsI,2), 200, 'go');
 
 % set(gcf, 'WindowButtonMotionFcn', @mouseMove);
 

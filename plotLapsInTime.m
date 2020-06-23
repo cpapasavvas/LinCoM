@@ -23,8 +23,10 @@ for i= 1: length(uniqPaths)
     ctext = sprintf('{%f %f %f}', colorM(mod(i-1,size(colorM,1))+1,:));
     titleTxt{i} = ['\color[rgb]' ctext labels{i} ' : ' num2str(A) '->' num2str(Z)];
 end
+titleTxt{end+1}='';
 
 plot(cTrajT, dTraj_ecc, 'k')
+box off
 hold on
 
 for i = 1: length(lapsTime)
@@ -32,7 +34,9 @@ for i = 1: length(lapsTime)
     Z = lapsIdeal(i,2);
     cI = mod(seqPaths(i), size(colorM,1));
     plot(cTrajT(lapsTime(i,1):lapsTime(i,2)), dTraj_ecc(lapsTime(i,1):lapsTime(i,2)), 'Color', colorM(cI,:))
-    text(cTrajT(lapsTime(i,1)), dTraj_ecc(lapsTime(i,1))+0.05+0.5*rand, num2str(A), 'Color', colorM(cI,:))
+    if i==1
+        text(cTrajT(lapsTime(i,1)), dTraj_ecc(lapsTime(i,1))+0.05+0.5*rand, num2str(A), 'Color', colorM(cI,:))
+    end
     text(cTrajT(lapsTime(i,2)), dTraj_ecc(lapsTime(i,2))+0.05+0.5*rand, num2str(Z), 'Color', colorM(cI,:))
 end
 hold off

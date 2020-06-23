@@ -6,13 +6,14 @@ function [returnObj, type] = loadVideoFile()
 % Yale School of Medicine
 % Feb 2019
 
-videoExts = {'*.mpg'; '*.mpeg'; '*.avi'; '*.divx'};
-imExts = {'*.bmp'; '*.jpg'; '*.jpeg'; '*.png'};
 
-[file,path] = uigetfile([videoExts ; imExts], 'Select video or image file');
+imExts = {'*.bmp'; '*.jpg'; '*.jpeg'; '*.png'};
+videoExts = {'*.mpg'; '*.mpeg'; '*.avi'; '*.divx'};
+
+[file,path] = uigetfile([imExts ;videoExts ], 'Select video or image file');
 filename = fullfile(path,file);
 
-if ~exist(filename)
+if ~exist(filename, 'file')
     error('no file selected')
 end
 
