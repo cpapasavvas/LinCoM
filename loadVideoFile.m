@@ -1,4 +1,4 @@
-function [returnObj, type] = loadVideoFile()
+function [returnObj, type] = loadVideoFile(fp)
 % Loading a video or image file
 %
 % Written by:
@@ -9,11 +9,18 @@ function [returnObj, type] = loadVideoFile()
 
 imExts = {'*.bmp'; '*.jpg'; '*.jpeg'; '*.png'};
 videoExts = {'*.mpg'; '*.mpeg'; '*.avi'; '*.divx'};
+    
+if isempty(fp)
+    disp('Choose an image or video file...')
+    fprintf('\n')
+    [file,path] = uigetfile([imExts ;videoExts ], 'Select video or image file');
+    fp = fullfile(path,file); 
+else
+    disp('Loading preselected image or video file...')
+    fprintf('\n')
+end
 
-[file,path] = uigetfile([imExts ;videoExts ], 'Select video or image file');
-filename = fullfile(path,file);
-
-if ~exist(filename, 'file')
+if ~exist(fp, 'file')
     error('no file selected')
 end
 
@@ -25,14 +32,14 @@ for i =1 :length(imExts)
 end
 
 
-[~,~,ext] = fileparts(filename);
+[~,~,ext] = fileparts(fp);
 switch ext
     case videoExts
-        returnObj= VideoReader(filename);
+        returnObj= VideoReader(fp);
         type = 'video';
         return
     case imExts
-        returnObj = imread(filename);
+        returnObj = imread(fp);
         type = 'image';
         return
 end

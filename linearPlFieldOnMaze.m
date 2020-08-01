@@ -1,5 +1,5 @@
 function linearPlFieldOnMaze(uniqB, connM, uniqPaths, PlField)
-%LINEARPLFIELDONMAZE Plots the linear place field on the network which is on top of the maze
+%LINEARPLFIELDONMAZE Plots the produced linear place field on the graph
 %   This is for visualization purposes only, it's not a transformation to a
 %   2D place field
 %
@@ -17,7 +17,6 @@ for i = 1: length(uniqPaths)
     cMap = c(nPlField+1, :);
     
     subplot(2,2,i)
-%     imshow(frame)
     hold on
     
     for j = 1: length(connM)  

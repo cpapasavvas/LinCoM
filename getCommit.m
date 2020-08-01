@@ -1,6 +1,6 @@
 function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 %GETCOMMIT Summary of this function goes here
-%   The functions gets all the elements that define the network and asks
+%   The functions gets all the elements that define the graph and asks
 %   from the user to choose the commitment nodes in the graph, one for each end.
 %   The path from each commitment node to its respective end is part of the
 %   commitment map (commitMap). Both commitment nodes and commitment map
@@ -10,6 +10,9 @@ function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 % Christoforos A Papasavvas 
 % Yale School of Medicine
 % Feb 2019
+
+disp('-- Commitment subgraphs --')
+disp('Interativiely choose the commitment region for each end in the maze')
 
 
 % get the commitment points on the tracks
@@ -37,7 +40,6 @@ for i = 1: length(endsI)
     end
     
     commitMap(path) = endsI(i);
-    
 end
 
 commitMap(commitMap == -1) = 0;

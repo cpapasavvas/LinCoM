@@ -1,11 +1,11 @@
-function [uniqBins, adjM, connM, distM, eccentr] = makeNetwork(binC)
-%MAKENETWORK Gets one or more sequences of nodes and produces an undirected
-%acyclic graph/network
+function [uniqBins, adjM, connM, distM, eccentr] = makeGraph(binC)
+%MAKEGRAPH Gets one or more sequences of nodes and produces an undirected
+%acyclic graph
 %   binC is a cell array of bin sequences (repetitions expected)
-%   uniqBins is the resulting set of unique bins/nodes in the network (x,y position)
+%   uniqBins is the resulting set of unique bins/nodes in the graph (x,y position)
 %   adjM is the adjacency matrix: square matrix with binary values
 %           indicating which pairs of nodes are adjacent
-%   connM is the list of all the edges/connections in the network
+%   connM is the list of all the edges/connections in the graph
 %   distM is the distance matrix: square matrix indicating the distance
 %           between each pair of nodes
 %   eccentr is the eccentricity vector, eccentricity measure for each node

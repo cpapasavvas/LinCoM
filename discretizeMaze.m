@@ -1,4 +1,4 @@
-function [binC] = discretizeMaze(polyline, frame)
+function [binC] = discretizeMaze(polyline, frame, d99)
 %DISCRETIZEMAZE splits the maze into bins
 % the input is a cell array of polylines and a frame for plotting purposes
 % outputs a cell array with the bin centers for each line segment
@@ -11,27 +11,43 @@ function [binC] = discretizeMaze(polyline, frame)
 binC = cell(1,[]);
 nbins = 2;
 count = 1;
+distCriterion = 1;
 firsttime = 1;
-while ~isempty(nbins)
-    hold off
-    imshow(frame)
-    linspaceX = linspace(polyline{1}(1,1), polyline{1}(2,1), nbins);
-    linspaceY = linspace(polyline{1}(1,2), polyline{1}(2,2), nbins);
+while distCriterion
+    while ~isempty(nbins)
+        hold off
+        imshow(frame)
+        linspaceX = linspace(polyline{1}(1,1), polyline{1}(2,1), nbins);
+        linspaceY = linspace(polyline{1}(1,2), polyline{1}(2,2), nbins);
 
-    hold on
-    plot(linspaceX, linspaceY, 'o-', 'MarkerSize',14);
-    
-    if firsttime
-        nbins = input('give the number of bins for the track shown: ');
-        firsttime = 0;
+        hold on
+        plot(linspaceX, linspaceY, 'o-', 'MarkerSize',14);
+
+        if firsttime
+            nbins = input('give the number of bins for the track shown: ');
+            firsttime = 0;
+        else
+            nbins = input('Press enter to continue or enter another number to change: ');
+        end
+
+
+    end
+
+    binC{count} = [linspaceX' linspaceY'];
+    binsize = pdist(binC{1}(1:2,1:2));
+
+    if 2*binsize > d99
+        distCriterion = 0;
     else
-        nbins = input('Press enter to continue or enter another number to change: ');
+        disp('WARNING: Bin size too small for such coarse trajectory')
+        disp('         Try a lower number of bins')
+        nbins = 2;
+        binC = cell(1,[]);
+        firsttime = 1;
     end
 end
-binC{count} = [linspaceX' linspaceY'];
-count= count + 1;
 
-binsize = pdist(binC{1}(1:2,1:2));
+count= count + 1;
 
 imshow(frame)
 hold on
@@ -55,6 +71,6 @@ for i = 1: length(polyline)
     end
 end
     
-
+close
 end
 

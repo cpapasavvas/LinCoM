@@ -21,21 +21,23 @@ hold on
 plot(uniqB(:,1), uniqB(:,2), 'ko','MarkerSize', 15);
 
 
+    text(uniqB(i,1), uniqB(i,2), num2str(i), 'Color','b')
+
+
+
 commitI = zeros(size(endsI));
 for i = 1: length(endsI)
-    fprintf(' Choose commitment subgraph for the end shown...')
+    disp(' Choose commitment subgraph for the end shown')
     
     endI = endsI(i); 
     clickedBin = 0;
     
-    scatter(uniqB(endI,1), uniqB(endI,2), 200, 'go');
-    % text(uniqB(endI,1), uniqB(endI,2), num2str(endI), 'Color','b')
+    scatter(uniqB(endI,1), uniqB(endI,2), 200, 'bo');
         
     while commitI(i)==0        
         pause(0.5)
         commitI(i) = clickedBin;
     end
-    disp('DONE')
 end
 close all
 
@@ -43,7 +45,6 @@ close all
 
         scatterHandles = findobj('type', 'Scatter');
         scatter(uniqB(endI,1), uniqB(endI,2), 200, 'go');
-        % text(uniqB(endI,1), uniqB(endI,2), num2str(endI), 'Color','b')
        
         if ~isempty(scatterHandles)
             delete(scatterHandles)

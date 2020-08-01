@@ -1,8 +1,8 @@
 function dTraj = discretizeTraj(cTraj, uniqB, adjM, distM, connM, frame)
 %DISCRETIZETRAJ gets a continuous 2D trajectory and transforms it into a
-%discrete trajectory on a specific network
+%   discrete trajectory on a specific graph
 %   cTraj is the continuous trajectory
-%   uniqB, adjM, distM, connM describe the network
+%   uniqB, adjM, distM, connM describe the graph
 %   frame is a frame from the video, for plotting purposes
 %
 % Written by:
@@ -21,7 +21,7 @@ current = cTraj(1,:);
 distL = pdist2(current, uniqB);
 [~,dI] = sort(distL);
 cand = dI(1:3);
-% if the top three canditates have low adjacency in the network, then there
+% if the top three canditates have low adjacency in the graph, then there
 % is ambiguity in the initial condition; user input is required
 if adjM(cand(1),cand(2)) + adjM(cand(1),cand(3)) + adjM(cand(2),cand(3)) < 2
     imshow(frame)

@@ -1,15 +1,22 @@
-function cell_of_Cells = loadCells()
+function cell_of_Cells = loadCells(fp)
 % Load a cell array with the spiketimes of the different cells
 
 
-[file,path] = uigetfile('*.mat', 'Select mat file with the spiketimes');
-filename = fullfile(path,file);
+if isempty(fp)
+    disp('Choose a mat file...')
+    fprintf('\n')
+    [file,path] = uigetfile('*.mat', 'Select mat file with the spiketimes');
+    fp = fullfile(path,file);
+else
+    disp('Loading preselected spiketimes file...')
+    fprintf('\n')    
+end
 
-if ~exist(filename)
+if ~exist(fp, 'file')
     error('no file selected')
 end
 
-load(filename)
+load(fp)
 
 var_struct = whos;
 classes = {var_struct.class};

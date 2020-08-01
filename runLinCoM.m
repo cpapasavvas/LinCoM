@@ -1,10 +1,19 @@
-%%
-% get an image of the maze either from a movie or an image or a saved 
-% frame.mat file.
-% the movie should be the same as the one on which videotracking was
-% applied for the extraction of trajectory.
+% Optional : set up filepaths for quick loading of the files
+% Three filepaths in order: 1. maze image file
+%                           2. trajectory file
+%                           3. spiketimes file
 
-[obj,type]=loadVideoFile;
+if exist('filepaths.mat', 'file')
+    load filepaths.mat
+else
+    filepaths = {[]; []; []};
+end
+
+%%
+% get an image of the maze either from a movie file or an image file
+
+disp('-- Import image of the maze --')
+[obj,type]=loadVideoFile(filepaths{1});
 if strcmp(type, 'video')
     brightness = 1;                 % brightness parameter
     frame=getBrightFrame(obj,brightness);     
@@ -12,8 +21,17 @@ else
     frame = obj;
 end
 
+
+%%
 % load continuous trajectory (cTraj)
-[cTraj, cTrajT] = load_cTraj;
+disp('-- Import trajectory --')
+[cTraj, cTrajT, d99] = load_cTraj(filepaths{2});
+
+%%
+% load the spiketimes of different cells
+disp('-- Import spiketimes --')
+cells = loadCells(filepaths{3});
+
 
 %%
 % ask from the user to draw a polyline
@@ -22,18 +40,22 @@ polyline = getPolyline(frame);
 % removes the common segments among the different lines
 polyline = removeCommonSegm(polyline);
 
+% show preliminary graph
+showPrel(polyline, frame)
+
+
 % allBins have the same cell structure as the polyline
 % it's a collection of all the bins organized in line segments
 % IMPROVEMENT NEEDED: compare the minimum distance between bins and the
 % maximum distance recorded in the trajectory : the latter should be lower
 % for more robust results
 % ('fewer bins are suggested due to low sampling rate of trajectory')
-allBins = discretizeMaze(polyline, frame);
+allBins = discretizeMaze(polyline, frame, d99);
 
-% make up a network/graph of bins
-% the bins are the nodes in an undirected acyclic graph/network
+% make up a graph of bins
+% the bins are the nodes in an undirected acyclic graph
 fprintf('Making up the graph...')
-[uniqB, adjM, connM, distM, ecc] = makeNetwork(allBins);
+[uniqB, adjM, connM, distM, ecc] = makeGraph(allBins);
 disp('DONE')
 
 
@@ -51,22 +73,22 @@ endsI = findEnds(adjM);
 
 
 % transform the continuous trajectory to discrete trajectory
-% the discrete trajectory is a sequence of bins in the network
+% the discrete trajectory is a sequence of bins in the graph
 fprintf('Discretizing the trajectory...')
 dTraj = discretizeTraj(cTraj, uniqB, adjM, distM, connM, frame);
 disp('DONE')
 
 % optional demonstration
-demoP = input('enter y if you want to demontrate the discretization result: ', 's');
+demoP = input('enter y if you want to demontsrate the discretization process: ', 's');
 if strcmp(demoP, 'y')
     demoDiscrProjection(uniqB,connM, dTraj,cTraj, frame);
-    % a range of time indices can be used here, for example:
+    % Partial demo: a range of time indices can be used here, for example:
     % demoDiscrProjection(uniqB,connM, dTraj,cTraj, frame, 500:800);
 end
 
 
 %%
-% detect the laps using the network properties
+% detect the laps using the graph properties
 [lapsActual, lapsIdeal, lapsTime] = lapDetection(uniqB, connM, endsI, commI, commitMap, dTraj, ecc, frame);
 
 
@@ -85,9 +107,5 @@ plotLapsInTime(uniqPaths, seqPaths, lapsIdeal, lapsTime, dTraj, ecc, cTrajT, lab
 
 %%
 % calculate and plot the place fields for specific cells
-
-% load the spiketimes of different cells
-disp('Choose a mat file with the spiketimes of the cells')
-cells = loadCells;
 [PFs, OCCUPs] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels);
 

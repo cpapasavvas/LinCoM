@@ -1,4 +1,4 @@
-function [cTraj, cTrajT] = load_cTraj()
+function [cTraj, cTrajT, D99] = load_cTraj(fp)
 % Asks from the user to load a trajectory file (.mat file)
 % The mat file is expected to include a Tx2 matrix (double or 
 % single; (X,Y) coordinates for T timepoints)
@@ -12,9 +12,22 @@ function [cTraj, cTrajT] = load_cTraj()
 % Yale School of Medicine
 % Feb 2019
 
-[file,path] = uigetfile({'*.mat'}, 'Select trajectory file');
-filename = fullfile(path,file);
-load(filename);
+
+if isempty(fp)
+    disp('Choose a mat file...')
+    fprintf('\n')
+    [file,path] = uigetfile({'*.mat'}, 'Select trajectory file');
+    fp = fullfile(path,file);
+else
+    disp('Loading preselected trajectory file...')
+    fprintf('\n')
+end
+
+if ~exist(fp, 'file')
+    error('no file selected')
+end
+
+load(fp);
 var_struct = whos;
 classes = {var_struct.class};
 
@@ -25,7 +38,7 @@ IND = IND1 | IND2;
 
 var_struct_sub = var_struct(IND);
 
-
+% identify trajectory variable
 L=0;
 for i =1 : length(var_struct_sub)
     currVar = eval(var_struct_sub(i).name);
@@ -40,6 +53,11 @@ for i =1 : length(var_struct_sub)
     end
 end
 
+% 99th percentile of euclidean distances in the trajectory
+DX = diff(cTraj);
+D99 = prctile(sqrt(DX(:,1).^2 + DX(:,2).^2), 99);
+
+% identify trajectory timestamps
 if L
     for i =1 : length(var_struct_sub)
         currVar = eval(var_struct_sub(i).name);
@@ -52,9 +70,9 @@ if L
             return
         end
     end
-    cTrajT = [1:L]';
+    cTrajT = (1:L)';
 else
-    error('not compatible trace file found in the loaded mat file')
+    error('no compatible trajectory variable found in the loaded mat file')
 end
 
 end
