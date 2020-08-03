@@ -15,10 +15,10 @@ hold on
 % for i = 1: length(connM)  
 %     xp = uniqB([connM(i,1) connM(i,2)], 1);
 %     yp = uniqB([connM(i,1) connM(i,2)], 2);
-%     plot(xp, yp, 'ko-','MarkerSize', 15);
+%     plot(xp, yp, 'ko-','MarkerSize', 11);
 % end
 
-plot(uniqB(:,1), uniqB(:,2), 'ko','MarkerSize', 15);
+plot(uniqB(:,1), uniqB(:,2), 'ko','MarkerSize', 11);
 
 
 commitI = zeros(size(endsI));

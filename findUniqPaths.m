@@ -12,7 +12,7 @@ function [paths, seqPaths, labels] = findUniqPaths(lapsActual, lapsIdeal, adjM, 
 
 for i = 1: size(lapsIdeal,1)-1
     if lapsIdeal(i,2) ~= lapsIdeal(i+1,1)
-        error('Inconsistent Sequence of Laps')
+        error('Inconsistent sequence of runs')
     end
 end
 
@@ -54,12 +54,12 @@ end
 for i = 1:length(paths)
     SD = setdiff(paths{i}, actualUnion);
     if ~isempty(SD)
-        key = input(sprintf('The run %s was found not to be covered completely during the laps. Do you want to shorten it? (y): \n', labels{i}), 's');
+        fprintf(sprintf('The path %s was found not to be covered completely during the runs.\n' , labels{i}));
+        key = input('Do you want to shorten it? (y/n): ', 's');
         if strcmp(key, 'y')
-            % using intersection won't work because we need to preserve the
-            % order in the path
           paths{i}(ismember(paths{i}, SD)) = [];
-          disp('The run was shortened. It will be referred to as before (idealLap numbers) but the firing rate and occupancy will be calculated based on the shortened version.')
+          %disp('The path was shortened.')
+          %disp('It will be referred to as before (idealLap numbers) but the firing rate and occupancy will be calculated based on the shortened version.')
         end
     end
     

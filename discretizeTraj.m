@@ -29,7 +29,7 @@ if adjM(cand(1),cand(2)) + adjM(cand(1),cand(3)) + adjM(cand(2),cand(3)) < 2
     for i = 1: length(connM)  
         xp = uniqB([connM(i,1) connM(i,2)], 1);
         yp = uniqB([connM(i,1) connM(i,2)], 2);
-        plot(xp, yp, 'ko-','MarkerSize', 15);
+        plot(xp, yp, 'ko-','MarkerSize', 11);
         hold on
     end
     for i =1: 3

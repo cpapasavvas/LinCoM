@@ -36,7 +36,7 @@ while distCriterion
     binC{count} = [linspaceX' linspaceY'];
     binsize = pdist(binC{1}(1:2,1:2));
 
-    if 2*binsize > d99
+    if 1.5* binsize > d99
         distCriterion = 0;
     else
         disp('WARNING: Bin size too small for such coarse trajectory')

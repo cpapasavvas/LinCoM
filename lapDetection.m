@@ -99,7 +99,7 @@ hold on
 for i = 1: length(connM)  
     xp = uniqB([connM(i,1) connM(i,2)], 1);
     yp = uniqB([connM(i,1) connM(i,2)], 2);
-    plot(xp, yp, 'ko-','MarkerSize', 15);
+    plot(xp, yp, 'ko-','MarkerSize', 11);
 end
 for i = endsI
     text(uniqB(i,1)+10, uniqB(i,2), num2str(i), 'Color', 'g')
@@ -143,7 +143,7 @@ for i = 1: length(dTraj)
     
     
     % scatter the current point on the discrete trajectory
-    scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 150, 'bo', 'filled')
+    scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 110, 'bo', 'filled')
     pause(0.001)
     
     if ismember(i, lapsT(:,2))
