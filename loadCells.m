@@ -1,4 +1,4 @@
-function cell_of_Cells = loadCells(fp)
+function [cell_of_Cells, fp] = loadCells(fp)
 % Load a cell array with the spiketimes of the different cells
 
 

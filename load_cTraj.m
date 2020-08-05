@@ -1,4 +1,4 @@
-function [cTraj, cTrajT, D99] = load_cTraj(fp)
+function [cTraj, cTrajT, D99, fp] = load_cTraj(fp)
 % Asks from the user to load a trajectory file (.mat file)
 % The mat file is expected to include a Tx2 matrix (double or 
 % single; (X,Y) coordinates for T timepoints)

@@ -1,4 +1,4 @@
-function [returnObj, type] = loadVideoFile(fp)
+function [returnObj, type, fp] = loadVideoFile(fp)
 % Loading a video or image file
 %
 % Written by:

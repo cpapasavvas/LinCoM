@@ -125,6 +125,6 @@ plotLapsInTime(uniqPaths, seqPaths, lapsIdeal, lapsTime, dTraj, ecc, cTrajT, lab
 [PFs, OCCUPs] = getLinearPlFields(cells, uniqPaths, seqPaths, cTrajT, lapsTime, dTraj, labels);
 
 % Save the place fields (PFs) in a result file
-% PFs is a cell array (KxN, K place fields for each one of the N place cells)
-% (place cells are ordered as ordered in the spiketimes input file)
+% PFs is a cell array (KxN, K place fields for each one of the N plae cells)
+% with ith cell corres(place cells are ordered as ordered in the spiketimes input file)
 save([datestr(now, 'yyyymmdd_HHMM') '.mat'], 'PFs')
