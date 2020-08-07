@@ -11,7 +11,7 @@ function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 % Yale School of Medicine
 % Feb 2019
 
-disp('-- Commitment subgraphs --')
+disp('  - Commitment subgraphs')
 disp('Interativiely choose the commitment region for each end in the maze')
 
 

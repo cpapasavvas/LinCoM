@@ -11,11 +11,10 @@ for i = 1: length(polyline)
         linspaceY = linspace(polyline{i}(j,2), polyline{i}(j+1,2), 2);
 
         hold on
-        plot(linspaceX, linspaceY, 'k.-');
+        plot(linspaceX, linspaceY, 'b.-');
     end
 end
 
-fprintf('\n')
 disp('Review the preliminary graph drawn')
 disp('Press any key to continue')
 pause

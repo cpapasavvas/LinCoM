@@ -17,6 +17,9 @@ for i = 1: size(lapsIdeal,1)-1
 end
 
 % finding and labeling the unique paths/runs
+fprintf('\n')
+disp('  - Labeling run clusters:')
+
 repeatFlag = 0 ;
 uniqDir = unique(lapsIdeal,'rows');
 paths = cell(1,size(uniqDir,1));

@@ -17,7 +17,7 @@ end
 polyline= cell(1,N-1);
 
 fprintf('\n')
-disp('-- Drawing preliminary graph --')
+disp('  - Drawing preliminary graph')
 for i = 1:N-1 
     imshow(frame)  
     if i==1
@@ -36,7 +36,7 @@ for i = 1:N-1
         disp(['Ends remaining: ' num2str(N - i)])
         disp('Rearrange nodes to cover the next end')
         disp('Drag and drop nodes or remove them by right clicking on them')
-        disp('Keep the red line segment stable')
+        disp('Keep the red line segment in place')
         input('Press enter when done:');
         fprintf('\n')
     end

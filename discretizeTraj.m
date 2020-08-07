@@ -3,7 +3,7 @@ function dTraj = discretizeTraj(cTraj, uniqB, adjM, distM, connM, frame)
 %   discrete trajectory on a specific graph
 %   cTraj is the continuous trajectory
 %   uniqB, adjM, distM, connM describe the graph
-%   frame is a frame from the video, for plotting purposes
+%   frame is an image of the maze, for plotting purposes
 %
 % Written by:
 % Christoforos A Papasavvas 
@@ -29,7 +29,7 @@ if adjM(cand(1),cand(2)) + adjM(cand(1),cand(3)) + adjM(cand(2),cand(3)) < 2
     for i = 1: length(connM)  
         xp = uniqB([connM(i,1) connM(i,2)], 1);
         yp = uniqB([connM(i,1) connM(i,2)], 2);
-        plot(xp, yp, 'ko-','MarkerSize', 11);
+        plot(xp, yp, 'bo-','MarkerSize', 11);
         hold on
     end
     for i =1: 3
@@ -45,6 +45,8 @@ if adjM(cand(1),cand(2)) + adjM(cand(1),cand(3)) + adjM(cand(2),cand(3)) < 2
 else
     dTraj(1) = cand(1);
 end
+
+fprintf('Discretizing the trajectory')
 
 %finding each remaining position based on the previous position and the
 %current measure from videotracking
@@ -81,7 +83,11 @@ for i = 2:length(cTraj)
         dTraj(i) = next;
     end
     
+    if mod(i,round(length(cTraj)/10)) == 0
+        fprintf('.')
+    end
 end
+disp('DONE')
 
 end
 

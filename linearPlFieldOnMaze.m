@@ -22,7 +22,7 @@ for i = 1: length(uniqPaths)
     for j = 1: length(connM)  
         xp = uniqB([connM(j,1) connM(j,2)], 1);
         yp = uniqB([connM(j,1) connM(j,2)], 2);
-        plot(xp, yp, 'ko-','MarkerSize', 11);
+        plot(xp, yp, 'bo-','MarkerSize', 11);
     end
 
     scatter(uniqB(uniqPaths{i},1), uniqB(uniqPaths{i},2), 100, cMap, 'filled', 's')

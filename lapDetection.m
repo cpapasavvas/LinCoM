@@ -9,6 +9,7 @@ function [lapsActual, lapsIdeal, lapsTime] = lapDetection(uniqB, connM, endsI, c
 % Yale School of Medicine
 % Feb 2019
 
+fprintf('Detecting runs...')
 
 % squeezing the dTraj to the time of first entry to a bin
 timeI = [];
@@ -84,12 +85,12 @@ for i = 1: length(peakC)-1
     if peakC(i) ~= peakC(i+1)
         lapsActual = [lapsActual; peakV(i) peakV(i+1)];
         lapsIdeal = [lapsIdeal; peakC(i) peakC(i+1)];
-        lapsT = [lapsT; peakI(i) peakI(i+1)];                       %save discrete time
-        lapsTime = [lapsTime; timeI(peakI(i)) timeI(peakI(i+1))];   %save continuous time
+        lapsT = [lapsT; peakI(i) peakI(i+1)];                       %discr. time
+        lapsTime = [lapsTime; timeI(peakI(i)) timeI(peakI(i+1))];   %cont. time
     end
 end
 
-disp('Laps detected')
+disp('DONE')
 
 
 
@@ -99,18 +100,17 @@ hold on
 for i = 1: length(connM)  
     xp = uniqB([connM(i,1) connM(i,2)], 1);
     yp = uniqB([connM(i,1) connM(i,2)], 2);
-    plot(xp, yp, 'ko-','MarkerSize', 11);
+    plot(xp, yp, 'bo-','MarkerSize', 11);
 end
 for i = endsI
-    text(uniqB(i,1)+10, uniqB(i,2), num2str(i), 'Color', 'g')
+    text(uniqB(i,1)+10, uniqB(i,2), num2str(i), 'Color', 'r')
 end
 
 % save figure for later, if needed
 % savefig('frameLabeled.fig')
 
-k = input('Type D for visual demonstration of the detected laps (anything else to skip): ','s');
-if ~strcmp(k,'D')
-    close
+k = input('OPTIONAL - Enter y for visual demonstration of the detected runs: ','s');
+if ~strcmp(k,'y')
     return
 end
 
@@ -154,8 +154,8 @@ for i = 1: length(dTraj)
         f1 = figure;
         plot(dTraj_ecc, 'k')
         hold on
-        text(lapsT(currLapI,1), dTraj_ecc(lapsT(currLapI,1)), num2str(A), 'Color', 'g')
-        text(lapsT(currLapI,2), dTraj_ecc(lapsT(currLapI,2)), num2str(Z), 'Color', 'g')
+        text(lapsT(currLapI,1), dTraj_ecc(lapsT(currLapI,1)), num2str(A), 'Color', 'r')
+        text(lapsT(currLapI,2), dTraj_ecc(lapsT(currLapI,2)), num2str(Z), 'Color', 'r')
         plot(currLapStartT: i, dTraj_ecc(currLapStartT: i), 'b:', 'LineWidth', 3)
         ylabel('trajectory eccentricity')
         xlabel('timestep')

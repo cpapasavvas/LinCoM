@@ -24,7 +24,8 @@ while distCriterion
         plot(linspaceX, linspaceY, 'o-', 'MarkerSize',14);
 
         if firsttime
-            nbins = input('give the number of bins for the track shown: ');
+            fprintf('\n')
+            nbins = input('Give the number of bins for the track shown: ');
             firsttime = 0;
         else
             nbins = input('Press enter to continue or enter another number to change: ');

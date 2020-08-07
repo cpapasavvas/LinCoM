@@ -15,18 +15,18 @@ elseif range(1) < 1 || range(end) > length(cTraj)
 end
     
 if length(range) ~= length(cTraj)
-    fprintf('press any key to start the projection demo from timestep %d to %d\n',range(1),range(end));
+    fprintf('Press any key to start the projection demo from timestep %d to %d\n',range(1),range(end));
     pause
 end
 
 
-imshow(frame)
+imh = imshow(frame);
 hold on
 
 for i = 1: length(connM)  
     xp = uniqB([connM(i,1) connM(i,2)], 1);
     yp = uniqB([connM(i,1) connM(i,2)], 2);
-    plot(xp, yp, 'ko-','MarkerSize', 11);
+    plot(xp, yp, 'bo-','MarkerSize', 11);
 end
 
 ButtonHandle = uicontrol('Style', 'PushButton', ...
@@ -34,7 +34,8 @@ ButtonHandle = uicontrol('Style', 'PushButton', ...
                          'Callback', 'delete(gcbf)');
                      
 for i = range
-    if ~ishandle(ButtonHandle)
+    % exit when stop button is pressed or window is closed
+    if ~ishandle(ButtonHandle) || ~ishandle(imh)
         disp('Loop stopped by user');
         break;
     end
@@ -48,6 +49,8 @@ for i = range
     scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 110, 'bo', 'filled')
     scatter(cTraj(i,1), cTraj(i,2), 'x', 'r')
     pause(0.01)
+    
+
 end
 
 
