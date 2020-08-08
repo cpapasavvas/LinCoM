@@ -22,8 +22,8 @@ for i = 1:N-1
     imshow(frame)  
     if i==1
         title('Trace the longest end-to-end path') 
-        disp('Place line segments to trace the longest end-to-end path')
-        disp('Left click to add node, right click to finish')
+        disp('  Place line segments to trace the longest end-to-end path')
+        disp('  Left click to add node, right click to finish')
         h(i) = impoly(gca,[],'Closed',false);
     else
         h(i) = impoly(gca,polyline{i-1},'Closed',false);
@@ -33,11 +33,11 @@ for i = 1:N-1
         
         title('Rearrange nodes to cover the next end')
         fprintf('\n')
-        disp(['Ends remaining: ' num2str(N - i)])
-        disp('Rearrange nodes to cover the next end')
-        disp('Drag and drop nodes or remove them by right clicking on them')
-        disp('Keep the red line segment in place')
-        input('Press enter when done:');
+        disp(['  Ends remaining: ' num2str(N - i)])
+        disp('  Rearrange nodes to cover the next end')
+        disp('  Drag and drop nodes or remove them by right clicking on them')
+        disp('  Keep the red line segment in place')
+        input('  Press enter when done:');
         fprintf('\n')
     end
     polyline{i} = getPosition(h(i));

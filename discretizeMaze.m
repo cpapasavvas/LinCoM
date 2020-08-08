@@ -25,10 +25,10 @@ while distCriterion
 
         if firsttime
             fprintf('\n')
-            nbins = input('Give the number of bins for the track shown: ');
+            nbins = input('  Give the number of bins for the track shown: ');
             firsttime = 0;
         else
-            nbins = input('Press enter to continue or enter another number to change: ');
+            nbins = input('  Press enter to continue or enter another number to change: ');
         end
 
 
@@ -40,8 +40,8 @@ while distCriterion
     if 1.5* binsize > d99
         distCriterion = 0;
     else
-        disp('WARNING: Bin size too small for such coarse trajectory')
-        disp('         Try a lower number of bins')
+        disp('  WARNING: Bin size too small for such coarse trajectory')
+        disp('           Try a lower number of bins')
         nbins = 2;
         binC = cell(1,[]);
         firsttime = 1;

@@ -33,13 +33,20 @@ ButtonHandle = uicontrol('Style', 'PushButton', ...
                          'String', 'Stop', ...
                          'Callback', 'delete(gcbf)');
                      
+% set the step for updating the demonstration figure
+if length(range) > 2000
+    step = 5;
+else
+    step = 1;
+end
+                
 for i = range
     % exit when stop button is pressed or window is closed
     if ~ishandle(ButtonHandle) || ~ishandle(imh)
         disp('Loop stopped by user');
         break;
     end
-    
+        
     % find and remove the previous scatter points
     hSc = findobj('type','scatter');
     if ~isempty('hSc')
@@ -48,9 +55,10 @@ for i = range
     
     scatter(uniqB(dTraj(i),1), uniqB(dTraj(i),2), 110, 'bo', 'filled')
     scatter(cTraj(i,1), cTraj(i,2), 'x', 'r')
-    pause(0.01)
     
-
+    if mod(i, step) == 0
+        drawnow
+    end
 end
 
 

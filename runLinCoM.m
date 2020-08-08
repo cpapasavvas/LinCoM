@@ -1,6 +1,5 @@
 clc
 close all
-
 disp('==== LinCoM ====')
 
 
@@ -67,7 +66,7 @@ allBins = discretizeMaze(polyline, frame, dist99);
 
 % make up a graph of bins
 % the bins are the nodes in an undirected acyclic graph
-fprintf('Making up the graph...')
+fprintf('  Making up the graph...')
 [uniqB, adjM, connM, distM, ecc] = makeGraph(allBins);
 disp('DONE')
 fprintf('\n')

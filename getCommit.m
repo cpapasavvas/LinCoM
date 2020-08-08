@@ -12,7 +12,7 @@ function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 % Feb 2019
 
 disp('  - Commitment subgraphs')
-disp('Interativiely choose the commitment region for each end in the maze')
+disp('  Interativiely choose the commitment region for each end in the maze')
 
 
 % get the commitment points on the tracks

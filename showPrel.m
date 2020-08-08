@@ -15,8 +15,8 @@ for i = 1: length(polyline)
     end
 end
 
-disp('Review the preliminary graph drawn')
-disp('Press any key to continue')
+disp('  Review the preliminary graph drawn')
+disp('  Press any key to continue')
 pause
 close
 

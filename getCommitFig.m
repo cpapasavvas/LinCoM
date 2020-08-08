@@ -23,7 +23,7 @@ plot(uniqB(:,1), uniqB(:,2), 'bo','MarkerSize', 11);
 
 commitI = zeros(size(endsI));
 for i = 1: length(endsI)
-    fprintf(' Choose commitment subgraph for the end shown...')
+    fprintf('  Choose commitment subgraph for the end shown...')
     
     endI = endsI(i); 
     clickedBin = 0;

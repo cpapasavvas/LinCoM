@@ -26,7 +26,7 @@ paths = cell(1,size(uniqDir,1));
 labels = cell(1,size(uniqDir,1));
 for i= 1: size(uniqDir,1)
     paths{i} = findPath(uniqDir(i,1), uniqDir(i,2), adjM, distM);
-    labels{i} = input(sprintf('Give label for %s -> %s: ',  num2str(uniqDir(i,1)), num2str(uniqDir(i,2))), 's');
+    labels{i} = input(sprintf('  Give label for %s -> %s: ',  num2str(uniqDir(i,1)), num2str(uniqDir(i,2))), 's');
     if ismember(labels{i}, labels(1:i-1))
         repeatFlag = 1;
     end
