@@ -1,0 +1,54 @@
+LinCoM
+------
+
+MATLAB package for the linearization of place fields in complex mazes
+
+
+
+Description
+-----------
+
+This package was designed to help researchers in the field of hippocampal
+place encoding and episodic memory analyze their data. 
+
+LinCoM analyzes the trajectory of an animal in a maze and the spike times 
+of place cells to produce linear place fields for each path in the maze and 
+for each place cell. The linear place fields are particularly useful, as 
+opposed to 2D place fields, for the construction of place cell sequences.
+
+LinCoM relies on a graph-theoretic algorithm particularly designed 
+to solve this problem even in a complex maze with one or more decision 
+points (e.g., T-maze, W-maze, double T-maze, radial maze).
+
+
+
+Getting Started
+---------------
+
+The software depends on the following MATLAB toolboxes:
+    Signal Processing Toolbox,
+    Image Processing Toolbox,
+    Statistics and Machine Learning Toolbox.
+
+To use LinCoM run the script runLinCoM and follow the prompts in MATLAB's 
+command window. 
+
+The package includes sample data in the groundTruth folder. Use those to 
+familiarize with the functionalities of the software before using larger
+datasets.
+
+
+
+License
+-------
+
+This project is licensed under the MIT License - see the LICENSE file 
+for details
+
+
+
+Author
+------
+
+Christoforos Papasavvas
+christoforos.papasavvas <at> ncl.ac.uk

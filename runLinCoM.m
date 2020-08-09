@@ -1,7 +1,7 @@
 clc
 close all
 disp('==== LinCoM ====')
-
+fprintf('\n')
 
 % Ask the user to reload previously used input files if any
 % Three filepaths in order: 1. maze image file
