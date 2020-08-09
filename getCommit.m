@@ -11,9 +11,10 @@ function [commitI, commitMap] = getCommit(uniqB, distM, endsI, ecc, adjM, frame)
 % Yale School of Medicine
 % Feb 2019
 
-disp('  - Commitment subgraphs')
-disp('  Interativiely choose the commitment region for each end in the maze')
-
+disp('  - Commitment subgraphs (point at which the animal commits to an end)')
+disp('  Interativiely choose the commitment subgraphs for each end in the maze')
+disp('  It is adviced to keep the commitment subgraphs minimal')
+fprintf('\n')
 
 % get the commitment points on the tracks
 % interactive function needed here
@@ -35,7 +36,7 @@ for i = 1: length(endsI)
     % make sure that the above assumption holds
     for j = 1: length(path)-1
         if ~adjM(path(j),path(j+1))
-            error('check commitment path')
+            error('Make sure there is no overlap among the commitment subgraphs')
         end
     end
     
